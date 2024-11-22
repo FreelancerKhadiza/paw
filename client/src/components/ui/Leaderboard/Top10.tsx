@@ -1,4 +1,4 @@
-import logo from "../../../assets/logo.png";
+import logo from "../../../assets/logo_black.svg";
 import { UserLeaderboard } from "../../../types/Leaderboard.interface";
 import first from "../../../assets/madel/1th.png";
 import second from "../../../assets/madel/2th.png";
@@ -10,36 +10,31 @@ import seventh from "../../../assets/madel/7th.png";
 import eighth from "../../../assets/madel/8th.png";
 import ninth from "../../../assets/madel/9th.png";
 import tenth from "../../../assets/madel/10th.png";
+import { useContext } from "react";
+import { CProvider } from "../../../utils/ContextProvider";
 
 const Top10 = ({ Leaderboard }: { Leaderboard: UserLeaderboard[] }) => {
-    const getRandomColor = () => {
-        const colors = ['bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500'];
-        return colors[Math.floor(Math.random() * colors.length)];
-    };
+  
+    const setting = useContext(CProvider);
 
     return (
-        <div className="p-4 ">
+        <div className="p-2 mt-5">
             {
                 Leaderboard?.map((item: UserLeaderboard, index: number) => (
                     <div
                         key={index}
-                        className="relative flex py-2 items-center justify-between space-x-3">
-                        <div className='w-fit'>
-                            <div className={`flex items-center justify-center h-[38px] w-[38px] rounded-full p-1 ${getRandomColor()}`}>
-                                <span className='font-semibold text-[14px] text-black'>{String(item?.userId?.Name).slice(0,2)}</span>
-                            </div>
+                        className="relative flex py-4 items-center justify-between space-x-3 bg-white bg-opacity-10 w-full p-3 rounded-lg mb-2">
+                        <div className='w-fit bg-white p-2 rounded-xl'>
+                            <img src={logo} alt="" className="w-6" />
                         </div>
                         <div className="flex h-full flex-1 flex-col justify-center relative">
                             <div className='flex w-full flex-col justify-between h-full space-y-[2px]'>
-                                <h1 className="text-[14px] text-nowrap line-clamp-1 font-medium">
+                                <h1 className="text-[14px] text-nowrap line-clamp-1 font-medium text-white font-poppins">
                                     {item?.userId?.Name}
                                 </h1>
                                 <span className='flex items-center gap-1 flex-1 text-[12px]'>
-
-                                    <img src={logo} alt='dvf' className='w-[10px] rounded-full' />
-
-                                    <span className='text-[12px] text-nowrap font-medium'>
-                                        {item?.point ? item?.point : 0}
+                                    <span className='text-[12px] text-nowrap font-medium font-poppins text-white text-opacity-70'>
+                                        {item?.point ? item?.point : 0} {setting?.Setting?.Symbol}
                                     </span>
                                 </span>
                             </div>
