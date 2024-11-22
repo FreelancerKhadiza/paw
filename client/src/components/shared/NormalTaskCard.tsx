@@ -57,7 +57,7 @@ const NormalTaskCard = ({ item }: { item: ITask }) => {
                     </div>
                 </div>
 
-                <div className="absolute bottom-0 w-[80vw] h-[1px] bg-[#EDFD5D80] bg-opacity-50 right-0"></div>
+                <div className="absolute hidden bottom-0 w-[80vw] h-[1px] bg-[#EDFD5D80] bg-opacity-50 right-0"></div>
             </div>
         </div>
     );

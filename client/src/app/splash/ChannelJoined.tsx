@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import chat from "../../assets/strikers/chatting.gif";
 import { FaTelegram } from "react-icons/fa";
 import PageState from "../../components/ui/PageState";

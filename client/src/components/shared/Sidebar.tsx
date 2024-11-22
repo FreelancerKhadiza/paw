@@ -1,6 +1,5 @@
-import { AiOutlineThunderbolt } from "react-icons/ai";
 import { BiBroadcast } from "react-icons/bi";
-import { FaBroadcastTower, FaCoins, FaTasks, FaUser } from "react-icons/fa";
+import { FaBroadcastTower, FaTasks, FaUser } from "react-icons/fa";
 import { FcSettings } from "react-icons/fc";
 import { GiLightningDissipation } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
