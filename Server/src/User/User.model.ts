@@ -7,7 +7,6 @@ const CSchema = new Schema({
     },
     Username: {
         type: String,
-        unique: true
     },
     TgId: {
         type: Number,

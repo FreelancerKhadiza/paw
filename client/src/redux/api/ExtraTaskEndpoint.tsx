@@ -5,7 +5,7 @@ const ExtraTaskEndpoint = BaseApi.injectEndpoints({
         Ton_Transection: builder.mutation({
             query: (arg) => ({
                 url: '/extra-task/ton-transection',
-                method: 'POST',
+                method: 'POST', 
                 body: arg
             }),
             invalidatesTags: ["extra_task"]

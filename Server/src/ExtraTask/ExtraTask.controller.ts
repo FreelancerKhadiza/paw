@@ -12,13 +12,12 @@ import { TExtraTask } from "./ExtraTask.interface";
 import { SettingModel } from "../Setting/Setting.Model";
 import { rewardSchedule } from "../CheckIn";
 
-export const TonTransection = async (req: any, res: Response) => {
+export const TonTransections = async (req: any, res: Response) => {
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
         const { user: authUser }: { user: TUser } = req?.user;
         const body = req?.body;
-        console.log(body);
 
         const user = await UserModel.findById(authUser?._id).session(session);
         const point = await PointModel.findOne({ userId: user?._id }).session(session);
@@ -64,6 +63,66 @@ export const TonTransection = async (req: any, res: Response) => {
         }
     }
 }
+
+export const TonTransection = async (req: any, res: Response) => {
+    const session = await mongoose.startSession();
+    try {
+        session.startTransaction();
+
+        const { user: authUser }: { user: TUser } = req?.user;
+        const body = req?.body;
+
+        const user = await UserModel.findById(authUser?._id).session(session);
+        const point = await PointModel.findOne({ userId: user?._id }).session(session);
+        const setting = await SettingModel.findOne({}).session(session);
+
+        const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000);
+
+        const transection = await ExtraTaskModel.findOne({
+            title: "Ton Transection",
+            userId: user?._id,
+            pointId: point?._id,
+            createdAt: { $gte: twelveHoursAgo }
+        }).session(session);
+
+        if (transection?._id) {
+            throw new Error("Already did a Ton Transection in the last 12 hours!");
+        }
+
+        if (!user?._id) {
+            throw new Error("not exist!");
+        }
+        if (!point?._id) {
+            throw new Error("Point info not located!");
+        }
+
+        point.point = Number(point?.point) + Number(setting?.TransectionRewards ? setting?.TransectionRewards : 0);
+        await point.save({ session: session });
+
+        const task = await ExtraTaskModel.create([{
+            title: "Ton Transection",
+            point: setting?.TransectionRewards ? setting?.TransectionRewards : 0,
+            userId: user?._id,
+            pointId: point?._id,
+            category: 'transection',
+            walletInfo: JSON.stringify(body)
+        }], { session: session });
+
+        await session.commitTransaction();
+        await session.endSession();
+
+        return res.status(OK).send(FormetResponseSend(OK, "Ton Transection Complete", task[0]));
+    } catch (error) {
+        console.log(error);
+
+        if (error instanceof Error) {
+            await session.abortTransaction();
+            await session.endSession(); 
+            return res.status(BAD_REQUEST).send(FormetResponseErrorSend(BAD_REQUEST, error.message, error));
+        }
+    }
+};
+
 
 export const InviteTask = async (req: any, res: Response) => {
     const session = await mongoose.startSession();
@@ -168,9 +227,12 @@ export const ExtraTaskCompleteList = async (req: any, res: Response) => {
         const { user } = req?.user;
         const refer_count = await UserModel.find({ referBy: user?.ReferCode });
         const media = await SettingModel.findOne({});
+        
+        const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000);
         const transection = await ExtraTaskModel.findOne({
+            title: "Ton Transection",
             userId: user?._id,
-            title: "Ton Transection"
+            createdAt: { $gte: twelveHoursAgo }
         });
 
         const refer = await ExtraTaskModel.find({
