@@ -1,7 +1,6 @@
 {
-  "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "build": "tsc",
     "dev": "tsnd --respawn ./src/server.ts",
