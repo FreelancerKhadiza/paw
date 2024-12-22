@@ -21,7 +21,8 @@ export const CreateUser = async (req: Request, res: Response, next: NextFunction
         const TgId = req?.body?.TgId;
         const user = await UserModel.findOne({ TgId: TgId }, {}, { session });
         const setting = await SettingModel.findOne({}).session(session);
-        if (isValid(req?.body?.init, process.env.BOT_TOKEN as string)) {
+        // (isValid(req?.body?.init, process.env.BOT_TOKEN as string))
+        if (req?.body?.init as string) {
             if (user === null) {
                 const ReferCode = await v4();
                 const AObject = await {
@@ -259,3 +260,4 @@ export const UserSeenSplash = async (req: any, res: Response) => {
     }
     res.send({ stats: true })
 }
+

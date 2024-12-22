@@ -10,3 +10,4 @@ export interface TUser {
     isNew: boolean,
     createdAt: string
 }
+

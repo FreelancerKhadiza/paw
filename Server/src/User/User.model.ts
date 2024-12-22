@@ -33,3 +33,4 @@ const UserModel = model("user", CSchema);
 
 
 export default UserModel;
+
